@@ -68,12 +68,12 @@ def captioning(args):
             samples=audio_tensor,
             num_beams=args.num_beams,
         )
-    inference = {}
+    inference = []
     number_of_chunks = range(audio_tensor.shape[0])
     for chunk, text in zip(number_of_chunks, output):
         time = f"{chunk * 10}:00-{(chunk + 1) * 10}:00"
         item = {"text":text,"time":time}
-        inference[chunk] = item
+        inference.append(item)
         print(item)
     return inference
 
