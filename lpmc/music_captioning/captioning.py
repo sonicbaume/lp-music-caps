@@ -25,6 +25,7 @@ parser.add_argument("--max_length", default=128, type=int)
 parser.add_argument("--num_beams", default=5, type=int)
 parser.add_argument("--model_type", default="last", type=str)
 parser.add_argument("--audio_path", default="../../dataset/samples/orchestra.wav", type=str)
+parser.add_argument("--duration", default=10, type=int)
 
 def get_audio(audio_path, duration=10, target_sr=16000):
     n_samples = int(duration * target_sr)
@@ -58,7 +59,7 @@ def captioning(args):
     model = model.cuda(args.gpu)
     model.eval()
     
-    audio_tensor = get_audio(audio_path = args.audio_path)
+    audio_tensor = get_audio(audio_path = args.audio_path, duration = args.duration)
     if args.gpu is not None:
         audio_tensor = audio_tensor.cuda(args.gpu, non_blocking=True)
 
@@ -74,6 +75,7 @@ def captioning(args):
         item = {"text":text,"time":time}
         inference[chunk] = item
         print(item)
+    return inference
 
 if __name__ == '__main__':
     main()
